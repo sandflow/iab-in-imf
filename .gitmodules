@@ -1,0 +1,3 @@
+[submodule "external/asdcplib"]
+	path = external/asdcplib
+	url = https://github.com/sandflow/asdcplib.git
