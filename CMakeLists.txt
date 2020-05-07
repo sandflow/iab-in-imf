@@ -3,10 +3,10 @@ project (iab-in-imf)
 
 # import boost
 
-#set(Boost_USE_STATIC_LIBS ON)
-#set(Boost_USE_MULTITHREADED ON)
-#find_package(Boost REQUIRED COMPONENTS program_options)
-#include_directories(${Boost_INCLUDE_DIR})
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost REQUIRED COMPONENTS program_options)
+include_directories(${Boost_INCLUDE_DIR})
 
 # required for asdcplib
 
@@ -24,15 +24,14 @@ include_directories(external/asdcplib/src)
 
 # project files
 
-#file(GLOB_RECURSE SRC_FILES src/main/*.cpp src/*.h )
-#file(GLOB_RECURSE INCLUDE_FILES src/main/*.h )
-#include_directories(${INCLUDE_FILES})
-#add_executable(${PROJECT_NAME} ${SRC_FILES} ${INCLUDE_FILES})
-#target_link_libraries(${PROJECT_NAME} libas02)
-#target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} libas02)
+file(GLOB_RECURSE SRC_FILES src/main/cpp/*.cpp src/main/cpp/*.h )
+file(GLOB_RECURSE INCLUDE_FILES ssrc/main/cpp/*.h )
+include_directories(${INCLUDE_FILES})
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${INCLUDE_FILES})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} libas02)
 
-#set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
-#set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
 
 # tests
 
@@ -40,7 +39,13 @@ enable_testing()
 
 include(CTest)
 
-file( GLOB_RECURSE UNIT_TESTS src/test/*.cpp )
+file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
+
+# cli tests
+
+add_test(NAME "ia-frame-wrap" COMMAND ${PROJECT_NAME} --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out iab.mxf)
+
+# lib tests
 
 foreach( UNIT_TEST_PATH ${UNIT_TESTS} )
 	get_filename_component(UNIT_TEST_NAME ${UNIT_TEST_PATH} NAME_WE)
