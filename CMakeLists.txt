@@ -52,11 +52,11 @@ file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
 
 # cli tests
 
-add_test(NAME "ia-frame-wrap" COMMAND iabwriter --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out iab.mxf)
+add_test(NAME "ia-frame-wrap" COMMAND iabwriter --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out ia-frames.mxf)
 
 set(IA_FRAMES_OUTPUT_DIR "${CMAKE_BINARY_DIR}/ia-frames")
 file(MAKE_DIRECTORY "${IA_FRAMES_OUTPUT_DIR}")
-add_test(NAME "ia-frame-unwrap" COMMAND iareader --in iab.mxf --out "${IA_FRAMES_OUTPUT_DIR}")
+add_test(NAME "ia-frame-unwrap" COMMAND iareader --in ia-frames.mxf --out "${IA_FRAMES_OUTPUT_DIR}")
 
 
 # lib tests

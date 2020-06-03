@@ -176,7 +176,7 @@ int main(int argc, const char* argv[]) {
   bool equal = std::equal(std::begin(frame_1), std::end(frame_1), frame.second);
 
   if (!equal) {
-    return result;
+    return 2;
   }
 
   /* read frame 2 */

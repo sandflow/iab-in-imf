@@ -115,7 +115,7 @@ int main(int argc, const char* argv[]) {
 
     if (single_frame) {
         
-        f.open(cli_args["out"].as<std::string>() + "/" + cli_args["single"].as<std::string>());
+        f.open(cli_args["out"].as<std::string>() + "/" + cli_args["single"].as<std::string>(), std::ios_base::out | std::ios_base::binary);
 
     }
     
@@ -133,7 +133,7 @@ int main(int argc, const char* argv[]) {
 
             ss << cli_args["out"].as<std::string>() << "/" << i << ".iab";
 
-            f.open(ss.str());
+            f.open(ss.str(), std::ios_base::out | std::ios_base::binary);
         }
 
         if (! f.good()) {
