@@ -22,16 +22,25 @@ endif(WIN32)
 add_subdirectory(external/asdcplib)
 include_directories(external/asdcplib/src)
 
-# project files
+# include files
 
-file(GLOB_RECURSE SRC_FILES src/main/cpp/*.cpp src/main/cpp/*.h )
-file(GLOB_RECURSE INCLUDE_FILES ssrc/main/cpp/*.h )
+file(GLOB_RECURSE INCLUDE_FILES src/main/cpp/*.h )
 include_directories(${INCLUDE_FILES})
-add_executable(${PROJECT_NAME} ${SRC_FILES} ${INCLUDE_FILES})
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} libas02)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
-set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
+# compiler/linker settings
+
+set_property(GLOBAL PROPERTY CXX_STANDARD 11)
+set_property(GLOBAL PROPERTY LINKER_LANGUAGE CXX)
+
+# IABWriter project files
+
+add_executable(iabwriter src/main/cpp/writer.cpp ${INCLUDE_FILES})
+target_link_libraries(iabwriter ${Boost_LIBRARIES} libas02)
+
+# IABReader project files
+
+add_executable(iareader src/main/cpp/reader.cpp ${INCLUDE_FILES})
+target_link_libraries(iareader ${Boost_LIBRARIES} libas02)
 
 # tests
 
@@ -43,7 +52,12 @@ file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
 
 # cli tests
 
-add_test(NAME "ia-frame-wrap" COMMAND ${PROJECT_NAME} --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out iab.mxf)
+add_test(NAME "ia-frame-wrap" COMMAND iabwriter --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out iab.mxf)
+
+set(IA_FRAMES_OUTPUT_DIR "${CMAKE_BINARY_DIR}/ia-frames")
+file(MAKE_DIRECTORY "${IA_FRAMES_OUTPUT_DIR}")
+add_test(NAME "ia-frame-unwrap" COMMAND iareader --in iab.mxf --out "${IA_FRAMES_OUTPUT_DIR}")
+
 
 # lib tests
 
