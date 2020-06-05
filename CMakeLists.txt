@@ -34,13 +34,15 @@ set_property(GLOBAL PROPERTY LINKER_LANGUAGE CXX)
 
 # IABWriter project files
 
-add_executable(iabwriter src/main/cpp/writer.cpp ${INCLUDE_FILES})
-target_link_libraries(iabwriter ${Boost_LIBRARIES} libas02)
+set(IA_WRITER "ia-imf-writer")
+add_executable(${IA_WRITER} src/main/cpp/writer.cpp ${INCLUDE_FILES})
+target_link_libraries(${IA_WRITER}  ${Boost_LIBRARIES} libas02)
 
 # IABReader project files
 
-add_executable(iareader src/main/cpp/reader.cpp ${INCLUDE_FILES})
-target_link_libraries(iareader ${Boost_LIBRARIES} libas02)
+set(IA_READER "ia-imf-reader")
+add_executable(${IA_READER} src/main/cpp/reader.cpp ${INCLUDE_FILES})
+target_link_libraries(${IA_READER} ${Boost_LIBRARIES} libas02)
 
 # tests
 
@@ -52,11 +54,11 @@ file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
 
 # cli tests
 
-add_test(NAME "ia-frame-wrap" COMMAND iabwriter --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out ia-frames.mxf)
+add_test(NAME "ia-frame-wrap" COMMAND ${IA_WRITER} --in "${PROJECT_SOURCE_DIR}/src/test/resources/ia-frames" --out ia-frames.mxf)
 
 set(IA_FRAMES_OUTPUT_DIR "${CMAKE_BINARY_DIR}/ia-frames")
 file(MAKE_DIRECTORY "${IA_FRAMES_OUTPUT_DIR}")
-add_test(NAME "ia-frame-unwrap" COMMAND iareader --in ia-frames.mxf --out "${IA_FRAMES_OUTPUT_DIR}")
+add_test(NAME "ia-frame-unwrap" COMMAND ${IA_READER} --in ia-frames.mxf --out "${IA_FRAMES_OUTPUT_DIR}")
 
 
 # lib tests
