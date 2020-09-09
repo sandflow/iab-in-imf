@@ -36,13 +36,17 @@ set_property(GLOBAL PROPERTY LINKER_LANGUAGE CXX)
 
 set(IA_WRITER "ia-imf-writer")
 add_executable(${IA_WRITER} src/main/cpp/writer.cpp ${INCLUDE_FILES})
-target_link_libraries(${IA_WRITER}  ${Boost_LIBRARIES} libas02)
+target_link_libraries(${IA_WRITER} ${Boost_LIBRARIES} libas02)
 
 # IABReader project files
 
 set(IA_READER "ia-imf-reader")
 add_executable(${IA_READER} src/main/cpp/reader.cpp ${INCLUDE_FILES})
 target_link_libraries(${IA_READER} ${Boost_LIBRARIES} libas02)
+
+# install scripts
+
+install(TARGETS ${IA_WRITER} ${IA_READER} RUNTIME DESTINATION bin)
 
 # tests
 
